@@ -16,6 +16,9 @@ impl TxPool {
             std::collections::hash_map::Entry::Vacant(entry) => {
                 self.time_reference
                     .entry(transaction.get_timestamp())
+                    .and_modify(|inner| {
+                        inner.insert(transaction_hash);
+                    })
                     .or_insert_with(|| {
                         let mut to_insert = HashSet::new();
                         to_insert.insert(transaction_hash);
