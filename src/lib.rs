@@ -9,16 +9,22 @@ struct TxPool {
 }
 
 impl TxPool {
-
     pub fn add_transaction(&mut self, transaction: Box<dyn Transactionable>) -> bool {
-        let tx_hash = transaction.hash();
-        let time = transaction.get_timestamp(); 
-        
-        self.transactions.entry(tx_hash)
-            
-            .or_insert(transaction);
+        let transaction_hash = transaction.hash();
+        match self.transactions.entry(transaction_hash) {
+            std::collections::hash_map::Entry::Occupied(_) => false,
+            std::collections::hash_map::Entry::Vacant(entry) => {
+                self.time_reference
+                    .entry(transaction.get_timestamp())
+                    .or_insert_with(|| {
+                        let mut to_insert = HashSet::new();
+                        to_insert.insert(transaction_hash);
+                        to_insert
+                    });
+                entry.insert(transaction);
 
-        true
+                true
+            }
+        }
     }
 }
-
