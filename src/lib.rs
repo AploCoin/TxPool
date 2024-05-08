@@ -4,8 +4,8 @@ use blockchaintree::transaction::Transactionable;
 
 #[derive(Default)]
 pub struct TxPool {
-    pub transactions: HashMap<[u8; 32], Box<dyn Transactionable>>,
-    pub time_reference: BTreeMap<u64, HashSet<[u8; 32]>>,
+    transactions: HashMap<[u8; 32], Box<dyn Transactionable>>,
+    time_reference: BTreeMap<u64, HashSet<[u8; 32]>>,
 }
 
 impl TxPool {
