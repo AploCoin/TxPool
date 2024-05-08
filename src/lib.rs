@@ -1,14 +1,20 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 
-use blockchaintree::transaction::{self, Transactionable};
+use blockchaintree::transaction::Transactionable;
 
 #[derive(Default)]
-struct TxPool {
-    transactions: HashMap<[u8; 32], Box<dyn Transactionable>>,
-    time_reference: BTreeMap<u64, HashSet<[u8; 32]>>,
+pub struct TxPool {
+    pub transactions: HashMap<[u8; 32], Box<dyn Transactionable>>,
+    pub time_reference: BTreeMap<u64, HashSet<[u8; 32]>>,
 }
 
 impl TxPool {
+    pub fn new() -> Self {
+        Self {
+            transactions: HashMap::new(),
+            time_reference: BTreeMap::new(),
+        }
+    }
     pub fn add_transaction(&mut self, transaction: Box<dyn Transactionable>) -> bool {
         let transaction_hash = transaction.hash();
         match self.transactions.entry(transaction_hash) {

@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 blockchaintree = { git="https://github.com/AploCoin/BlockChainTree.git", branch="main" }
+primitive-types = "0.12.2"
