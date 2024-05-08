@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 
-use blockchaintree::transaction::{self, Transactionable};
+use blockchaintree::transaction::Transactionable;
 
 #[derive(Default)]
 pub struct TxPool {
