@@ -15,6 +15,7 @@ impl TxPool {
             time_reference: BTreeMap::new(),
         }
     }
+
     pub fn add_transaction(&mut self, transaction: Box<dyn Transactionable>) -> bool {
         let transaction_hash = transaction.hash();
         match self.transactions.entry(transaction_hash) {
@@ -35,5 +36,19 @@ impl TxPool {
                 true
             }
         }
+    }
+
+    pub fn pop_transaction(&mut self) -> Option<Box<dyn Transactionable>> {
+        let mut time_reference = self.time_reference.first_entry()?;
+
+        let references = time_reference.get_mut();
+        let tx_hash = references.iter().next()?.clone();
+        references.remove(&tx_hash);
+
+        if references.is_empty() {
+            time_reference.remove();
+        }
+
+        self.transactions.remove(&tx_hash)
     }
 }
