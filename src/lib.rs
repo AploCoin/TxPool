@@ -51,4 +51,9 @@ impl TxPool {
 
         self.transactions.remove(&tx_hash)
     }
+
+    pub fn pop_transactions(&mut self, n: usize) -> Vec<Box<dyn Transactionable>> {
+        //  TODO: performance issues, fix popping transactions
+        (0..n).map_while(|_| self.pop_transaction()).collect()
+    }
 }
